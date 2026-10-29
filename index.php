@@ -61,9 +61,15 @@ require __DIR__ . '/partials/header.php';
                                 <td><?= e((new DateTimeImmutable($student['enrolled_on']))->format('d M Y')) ?></td>
                                 <td>
                                     <div class="actions">
+                                        <a class="action-link" href="show.php?id=<?= e($student['id']) ?>">View</a>
                                         <a class="action-link" href="edit.php?id=<?= e($student['id']) ?>">Edit</a>
-                                        <form class="action-form" action="delete.php" method="post" onsubmit="return confirm('Delete this student record?');">
+                                        <form class="action-form" action="delete.php" method="post"
+                                              onsubmit="return confirm(<?= e(json_encode(
+                                                  'Delete ' . $student['first_name'] . ' ' . $student['last_name'] . '?',
+                                                  JSON_HEX_TAG | JSON_HEX_AMP | JSON_HEX_APOS | JSON_HEX_QUOT
+                                              )) ?>);">
                                             <input type="hidden" name="id" value="<?= e($student['id']) ?>">
+                                            <input type="hidden" name="_csrf_token" value="<?= e(csrfToken()) ?>">
                                             <button class="action-button" type="submit">Delete</button>
                                         </form>
                                     </div>
