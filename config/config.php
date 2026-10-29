@@ -8,6 +8,7 @@ $config = [
         'database' => getenv('DB_NAME') ?: 'swd_students',
         'username' => getenv('DB_USER') ?: 'root',
         'password' => getenv('DB_PASSWORD') ?: '',
+        'ssl_ca' => getenv('DB_SSL_CA') ?: null,
     ],
     'app' => [
         'read_only' => filter_var(getenv('APP_READ_ONLY') ?: '0', FILTER_VALIDATE_BOOLEAN),

@@ -1,0 +1,6 @@
+.git
+.gitignore
+.dockerignore
+config/config.local.php
+database.sql
+*.log

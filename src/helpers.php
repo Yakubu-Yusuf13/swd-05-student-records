@@ -3,10 +3,14 @@ declare(strict_types=1);
 
 if (session_status() === PHP_SESSION_NONE) {
     $isHttps = isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] !== '' && $_SERVER['HTTPS'] !== 'off';
+    $secureCookies = filter_var(
+        getenv('APP_SECURE_COOKIES') ?: ($isHttps ? '1' : '0'),
+        FILTER_VALIDATE_BOOLEAN
+    );
     session_set_cookie_params([
         'lifetime' => 0,
         'path' => '/',
-        'secure' => $isHttps,
+        'secure' => $secureCookies,
         'httponly' => true,
         'samesite' => 'Lax',
     ]);

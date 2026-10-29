@@ -18,11 +18,20 @@ function db(): PDO
         $database['database']
     );
 
-    $connection = new PDO($dsn, $database['username'], $database['password'], [
+    $options = [
         PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION,
         PDO::ATTR_DEFAULT_FETCH_MODE => PDO::FETCH_ASSOC,
         PDO::ATTR_EMULATE_PREPARES => false,
-    ]);
+    ];
+
+    if ($database['ssl_ca'] !== null) {
+        $options[PDO::MYSQL_ATTR_SSL_CA] = $database['ssl_ca'];
+        if (defined('PDO::MYSQL_ATTR_SSL_VERIFY_SERVER_CERT')) {
+            $options[PDO::MYSQL_ATTR_SSL_VERIFY_SERVER_CERT] = true;
+        }
+    }
+
+    $connection = new PDO($dsn, $database['username'], $database['password'], $options);
 
     return $connection;
 }
