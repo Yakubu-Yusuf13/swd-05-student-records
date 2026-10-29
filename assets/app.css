@@ -113,6 +113,96 @@ h1 {
     color: #fff;
 }
 
+.student-filters {
+    display: flex;
+    align-items: flex-end;
+    flex-wrap: wrap;
+    gap: 1rem;
+    overflow: visible;
+    margin-bottom: 1rem;
+    padding: 1rem;
+}
+
+.filter-field {
+    display: flex;
+    min-width: min(100%, 220px);
+    flex: 1 1 220px;
+    flex-direction: column;
+    gap: 0.4rem;
+}
+
+.filter-field label {
+    color: #334155;
+    font-size: 0.9rem;
+    font-weight: 600;
+}
+
+.filter-field input,
+.filter-field select {
+    width: 100%;
+    min-height: 42px;
+    padding: 0.55rem 0.7rem;
+    border: 1px solid #cbd5e1;
+    border-radius: 6px;
+    background: #fff;
+    color: #1f2937;
+    font: inherit;
+}
+
+.filter-field input:focus,
+.filter-field select:focus {
+    border-color: #2457a6;
+    outline: 3px solid rgb(36 87 166 / 15%);
+}
+
+.filter-actions {
+    display: flex;
+    min-height: 42px;
+    align-items: center;
+    gap: 1rem;
+}
+
+.results-summary {
+    margin: 0 0 0.75rem;
+    color: #64748b;
+    font-size: 0.9rem;
+}
+
+.pagination {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 0.4rem;
+    margin-top: 1.25rem;
+}
+
+.page-link {
+    display: inline-flex;
+    min-width: 38px;
+    min-height: 38px;
+    align-items: center;
+    justify-content: center;
+    padding: 0.4rem 0.65rem;
+    border: 1px solid #d5deea;
+    border-radius: 6px;
+    background: #fff;
+    color: #2457a6;
+    font-size: 0.9rem;
+    font-weight: 600;
+    text-decoration: none;
+}
+
+.page-link:hover,
+.page-link:focus-visible {
+    background: #eaf0f8;
+}
+
+.current-page {
+    border-color: #2457a6;
+    background: #2457a6;
+    color: #fff;
+}
+
 .button:hover,
 .button:focus-visible {
     background: #194580;
