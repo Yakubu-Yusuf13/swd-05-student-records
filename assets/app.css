@@ -113,6 +113,19 @@ h1 {
     color: #fff;
 }
 
+.read-only-badge {
+    display: inline-flex;
+    min-height: 38px;
+    align-items: center;
+    padding: 0.45rem 0.8rem;
+    border: 1px solid #d5deea;
+    border-radius: 6px;
+    background: #fff;
+    color: #53647b;
+    font-size: 0.88rem;
+    font-weight: 600;
+}
+
 .student-filters {
     display: flex;
     align-items: flex-end;

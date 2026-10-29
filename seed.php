@@ -5,11 +5,14 @@ require_once __DIR__ . '/src/helpers.php';
 require_once __DIR__ . '/src/Database.php';
 
 $confirmed = isset($_GET['confirm']) && $_GET['confirm'] === 'yes';
+$readOnly = appIsReadOnly();
 $inserted = 0;
 $alreadyPresent = 0;
 $databaseUnavailable = false;
 
-if ($confirmed) {
+if ($readOnly) {
+    http_response_code(403);
+} elseif ($confirmed) {
     $names = [
         ['Chinedu', 'Okonkwo'],
         ['Amina', 'Bello'],
@@ -122,6 +125,11 @@ require __DIR__ . '/partials/header.php';
         <div class="error-state" role="alert">
             <h2>Student records are temporarily unavailable</h2>
             <p>We couldn't add the test students. Check that MySQL is running in XAMPP, then try again.</p>
+        </div>
+    <?php elseif ($readOnly): ?>
+        <div class="error-state" role="status">
+            <h2>Seeding is disabled</h2>
+            <p>Seed records cannot be added while the app is in read-only demo mode.</p>
         </div>
     <?php elseif ($confirmed): ?>
         <div class="card empty-state">

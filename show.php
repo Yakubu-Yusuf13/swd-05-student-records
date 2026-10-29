@@ -4,6 +4,7 @@ declare(strict_types=1);
 require_once __DIR__ . '/src/helpers.php';
 require_once __DIR__ . '/src/Database.php';
 
+$readOnly = appIsReadOnly();
 $id = filter_var($_GET['id'] ?? null, FILTER_VALIDATE_INT, ['options' => ['min_range' => 1]]);
 $student = null;
 $databaseUnavailable = false;
@@ -50,7 +51,9 @@ require __DIR__ . '/partials/header.php';
                 <p class="subheading">Student record details.</p>
             </div>
             <div class="actions">
-                <a class="button" href="edit.php?id=<?= e($student['id']) ?>">Edit student</a>
+                <?php if (!$readOnly): ?>
+                    <a class="button" href="edit.php?id=<?= e($student['id']) ?>">Edit student</a>
+                <?php endif; ?>
                 <a class="cancel-link" href="index.php">Back to students</a>
             </div>
         </div>

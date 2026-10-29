@@ -4,6 +4,7 @@ declare(strict_types=1);
 require_once __DIR__ . '/src/helpers.php';
 require_once __DIR__ . '/src/Database.php';
 
+$readOnly = appIsReadOnly();
 $today = new DateTimeImmutable('today');
 $student = [
     'first_name' => '',
@@ -15,7 +16,9 @@ $student = [
 ];
 $errors = [];
 
-if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+if ($readOnly) {
+    http_response_code(403);
+} elseif ($_SERVER['REQUEST_METHOD'] === 'POST') {
     foreach ($student as $field => $default) {
         if (isset($_POST[$field]) && is_string($_POST[$field])) {
             $student[$field] = trim($_POST[$field]);
@@ -65,14 +68,21 @@ $submitLabel = 'Add student';
 require __DIR__ . '/partials/header.php';
 ?>
 <section aria-labelledby="page-title">
-    <div class="page-heading">
-        <div>
-            <h1 id="page-title">Add student</h1>
-            <p class="subheading">Enter the student's details below.</p>
+    <?php if ($readOnly): ?>
+        <div class="error-state">
+            <h1 id="page-title">Read-only demo</h1>
+            <p>Adding students is disabled in this public demo.</p>
         </div>
-    </div>
-    <div class="card form-card">
-        <?php require __DIR__ . '/partials/student-form.php'; ?>
-    </div>
+    <?php else: ?>
+        <div class="page-heading">
+            <div>
+                <h1 id="page-title">Add student</h1>
+                <p class="subheading">Enter the student's details below.</p>
+            </div>
+        </div>
+        <div class="card form-card">
+            <?php require __DIR__ . '/partials/student-form.php'; ?>
+        </div>
+    <?php endif; ?>
 </section>
 <?php require __DIR__ . '/partials/footer.php'; ?>

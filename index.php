@@ -5,6 +5,7 @@ require_once __DIR__ . '/src/helpers.php';
 require_once __DIR__ . '/src/Database.php';
 
 $courses = studentCourses();
+$readOnly = appIsReadOnly();
 $search = isset($_GET['q']) && is_string($_GET['q'])
     ? substr(trim($_GET['q']), 0, 100)
     : '';
@@ -87,7 +88,11 @@ require __DIR__ . '/partials/header.php';
                 <h1 id="page-title">Students</h1>
                 <p class="subheading">View and manage student records.</p>
             </div>
-            <a class="button" href="create.php">Add student</a>
+            <?php if ($readOnly): ?>
+                <span class="read-only-badge">Read-only demo</span>
+            <?php else: ?>
+                <a class="button" href="create.php">Add student</a>
+            <?php endif; ?>
         </div>
 
         <form class="card student-filters" action="index.php" method="get">
@@ -148,16 +153,18 @@ require __DIR__ . '/partials/header.php';
                                 <td>
                                     <div class="actions">
                                         <a class="action-link" href="show.php?id=<?= e($student['id']) ?>">View</a>
-                                        <a class="action-link" href="edit.php?id=<?= e($student['id']) ?>">Edit</a>
-                                        <form class="action-form" action="delete.php" method="post"
-                                              onsubmit="return confirm(<?= e(json_encode(
-                                                  'Delete ' . $student['first_name'] . ' ' . $student['last_name'] . '?',
-                                                  JSON_HEX_TAG | JSON_HEX_AMP | JSON_HEX_APOS | JSON_HEX_QUOT
-                                              )) ?>);">
-                                            <input type="hidden" name="id" value="<?= e($student['id']) ?>">
-                                            <input type="hidden" name="_csrf_token" value="<?= e(csrfToken()) ?>">
-                                            <button class="action-button" type="submit">Delete</button>
-                                        </form>
+                                        <?php if (!$readOnly): ?>
+                                            <a class="action-link" href="edit.php?id=<?= e($student['id']) ?>">Edit</a>
+                                            <form class="action-form" action="delete.php" method="post"
+                                                  onsubmit="return confirm(<?= e(json_encode(
+                                                      'Delete ' . $student['first_name'] . ' ' . $student['last_name'] . '?',
+                                                      JSON_HEX_TAG | JSON_HEX_AMP | JSON_HEX_APOS | JSON_HEX_QUOT
+                                                  )) ?>);">
+                                                <input type="hidden" name="id" value="<?= e($student['id']) ?>">
+                                                <input type="hidden" name="_csrf_token" value="<?= e(csrfToken()) ?>">
+                                                <button class="action-button" type="submit">Delete</button>
+                                            </form>
+                                        <?php endif; ?>
                                     </div>
                                 </td>
                             </tr>

@@ -14,11 +14,14 @@ $student = [
     'enrolled_on' => '',
 ];
 $errors = [];
-$notFound = $id === false || $id === null;
+$readOnly = appIsReadOnly();
+$notFound = !$readOnly && ($id === false || $id === null);
 $databaseUnavailable = false;
 $connection = null;
 
-if ($notFound) {
+if ($readOnly) {
+    http_response_code(403);
+} elseif ($notFound) {
     http_response_code(404);
 } else {
     try {
@@ -46,7 +49,7 @@ if ($notFound) {
     }
 }
 
-if ($_SERVER['REQUEST_METHOD'] === 'POST' && !$notFound && !$databaseUnavailable) {
+if ($_SERVER['REQUEST_METHOD'] === 'POST' && !$readOnly && !$notFound && !$databaseUnavailable) {
     foreach ($student as $field => $default) {
         if (isset($_POST[$field]) && is_string($_POST[$field])) {
             $student[$field] = trim($_POST[$field]);
@@ -102,7 +105,12 @@ $submitLabel = 'Save changes';
 require __DIR__ . '/partials/header.php';
 ?>
 <section aria-labelledby="page-title">
-    <?php if ($notFound): ?>
+    <?php if ($readOnly): ?>
+        <div class="error-state">
+            <h1 id="page-title">Read-only demo</h1>
+            <p>Changes are disabled in this public demo.</p>
+        </div>
+    <?php elseif ($notFound): ?>
         <div class="error-state">
             <h1 id="page-title">Student not found</h1>
             <p>The requested student record does not exist.</p>

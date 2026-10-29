@@ -2,6 +2,14 @@
 declare(strict_types=1);
 
 if (session_status() === PHP_SESSION_NONE) {
+    $isHttps = isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] !== '' && $_SERVER['HTTPS'] !== 'off';
+    session_set_cookie_params([
+        'lifetime' => 0,
+        'path' => '/',
+        'secure' => $isHttps,
+        'httponly' => true,
+        'samesite' => 'Lax',
+    ]);
     session_start();
 }
 
@@ -74,6 +82,12 @@ function studentCourses(): array
         'Data Analysis',
         'UI/UX Design',
     ];
+}
+
+function appIsReadOnly(): bool
+{
+    $config = require __DIR__ . '/../config/config.php';
+    return $config['app']['read_only'];
 }
 
 /**

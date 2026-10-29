@@ -18,6 +18,19 @@ if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
     exit;
 }
 
+if (appIsReadOnly()) {
+    http_response_code(403);
+    require __DIR__ . '/partials/header.php';
+    ?>
+    <section class="error-state" aria-labelledby="page-title">
+        <h1 id="page-title">Read-only demo</h1>
+        <p>Deleting students is disabled in this public demo.</p>
+    </section>
+    <?php
+    require __DIR__ . '/partials/footer.php';
+    exit;
+}
+
 if (!isValidCsrfToken($_POST['_csrf_token'] ?? null)) {
     http_response_code(400);
     require __DIR__ . '/partials/header.php';
